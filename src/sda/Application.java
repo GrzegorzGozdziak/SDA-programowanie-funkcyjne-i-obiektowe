@@ -33,14 +33,14 @@ public class Application {
 
 
         employeeList.stream()
-                .filter(e->e.getFirstName().endsWith("a"))
+                .filter(e -> e.getFirstName().endsWith("a"))
                 .forEach(e -> System.out.println(e));
 
         System.out.println();
         System.out.println("szukamy zarabiajacych pow. 3000");
 
         employeeList.stream()
-                .filter(e -> e.getSalary()>3000)
+                .filter(e -> e.getSalary() > 3000)
                 .forEach(e -> System.out.println(e));
 
         System.out.println();
@@ -48,7 +48,7 @@ public class Application {
 
         employeeList.stream()
                 .filter(e -> e.getDepartment().equals("JAVA"))
-                .filter(e -> e.getSalary()>=3000)
+                .filter(e -> e.getSalary() >= 3000)
                 .forEach(e -> System.out.println(e));
 
         System.out.println();
@@ -70,29 +70,38 @@ public class Application {
 
         Map<String, AbstractEmployee> map = employeeList.stream()
                 .collect(Collectors.toMap((e -> e.getFirstName()), e -> e));
-        map.forEach((k,v) -> System.out.println(k + ": " + v));
+        map.forEach((k, v) -> System.out.println(k + ": " + v));
 
         System.out.println();
         System.out.println("zwracamy liste pasujaca do imie +' '+ nazwisko");
 
         employeeList.stream()
-                .filter(e -> ((e.getFirstName()+" "+e.getLastName()).equals("Szymon Nowak")))
+                .filter(e -> ((e.getFirstName() + " " + e.getLastName()).equals("Szymon Nowak")))
                 .forEach(e -> System.out.println(e));
 
         System.out.println();
         System.out.println("posortuj po salary:");
-        employeeList.sort((e1, e2) -> e1.getSalary() > e2.getSalary() ? 1 : -1);
+        employeeList.sort((e1, e2) ->
+                e1.getSalary() > e2.getSalary() ? 1 :
+                        e1.getSalary() == e2.getSalary() ? 0 : -1);
         employeeList.forEach(e -> System.out.println(e.getFirstName() + ": " + e.getSalary()));
 
         System.out.println();
+        System.out.println("Pokaz tego ktory zarabia najwiecej - sposob 1");
 
         employeeList.sort((e1, e2) -> e1.getSalary() < e2.getSalary() ? 1 : -1);
         System.out.println(employeeList.get(0));
+
+        System.out.println();
+        System.out.println("Pokaz tego ktory zarabia najwiecej - sposob 2");
 
         AbstractEmployee richestEmployee = employeeList.stream()
                 .max((e1, e2) -> e1.getSalary() < e2.getSalary() ? 1 : -1)
                 .get();
         System.out.println(richestEmployee);
+
+        System.out.println();
+        System.out.println("Pokaz tego ktory zarabia najmniej");
 
         AbstractEmployee poorestEmployee = employeeList.stream()
                 .max((e1, e2) -> e1.getSalary() > e2.getSalary() ? 1 : -1)
@@ -107,10 +116,9 @@ public class Application {
                 .forEach(e -> {
                     List<AbstractEmployee> value = e.getValue();
                     value.stream()
-                            .filter(e1 -> e1.getSalary() > 3000)
+                            .filter(e1 -> e1.getSalary() >= 3000)
                             .forEach(e1 -> tmpList.add(e1));
                 });
-
 
 
     }
@@ -118,7 +126,7 @@ public class Application {
     public static Map<String, List<AbstractEmployee>> listToMap(List<AbstractEmployee> employees) {
         Map<String, List<AbstractEmployee>> map = new HashMap<>();
         for (AbstractEmployee employee : employees) {
-            if(map.containsKey(employee.getDepartment())) {
+            if (map.containsKey(employee.getDepartment())) {
                 List<AbstractEmployee> listEmployees = map.get(employee.getDepartment());
                 listEmployees.add(employee);
             } else {
