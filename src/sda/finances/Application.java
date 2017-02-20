@@ -7,9 +7,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Created by RENT on 2017-02-20.
- */
 public class Application {
     public static void main(String[] args) {
         List<Expense> expenses = init();
@@ -44,6 +41,14 @@ public class Application {
 
         //4. suma cen wszystkich produktow spozywczych
 
+        expenses.stream()
+                .filter(expense -> expense.getType().equals("spozywcze"))
+                .forEach(expense -> {
+                    System.out.println(expense.getProducts().stream()
+                            .mapToDouble(Product::getUnitPrice).sum());
+
+                });
+
 
     }
 
@@ -71,7 +76,7 @@ public class Application {
         Expense expense3 = new Expense("lekarstwa", products3, 2017, 2, 18);
 
         List<Product> products4 = new ArrayList<>();
-        products4.add(new Product("banan", 2, 1.5));
+        products4.add(new Product("cytryna", 4, 2.5));
         products4.add(new Product("chleb", 2, 2));
         products4.add(new Product("miesa", 2, 15));
 
